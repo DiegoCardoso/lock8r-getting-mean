@@ -1,1 +1,0 @@
-module.exports.index = (req, res) => res.render('index', { title: 'Lock8r' });

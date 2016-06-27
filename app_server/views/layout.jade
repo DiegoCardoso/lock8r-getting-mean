@@ -1,12 +1,29 @@
 doctype html
 html
   head
-    title= title
+    title Lock8r
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     link(rel='stylesheet', href='/bootstrap/css/amelia.bootstrap.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
+    .navbar.navbar-default.navbar-fixed-top
+      .container
+        .navbar-header
+          a.navbar-brand(href='/') Lock8r
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target= '#navbar-main')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+        #navbar-main.navbar-collapse.collapse
+          ul.nav.navbar-nav
+            li
+              a(href='/about/') About
+    .container        
+      block content
+      footer
+        .row
+          .col-xs-12
+            small &copy; Diego Cardoso 2016
 
   script(src='https://code.jquery.com/jquery-1.12.4.min.js')
   script(src='/bootstrap/js/bootstrap.min.js')

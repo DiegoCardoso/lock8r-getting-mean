@@ -5,9 +5,6 @@ block content
     .row
       .col-md-6.col-sm-12
         h1= title
-  .row  
+  .row
     .col-md-6.col-sm-12
-      p
-        | Lock8r was created to help people find places to sit down and get a bit of work done.
-        | <br /><br />
-        | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sed lorem ac nisi dignissim accumsan.
+      p !{(content).replace(/\n/g, '<br/>')}

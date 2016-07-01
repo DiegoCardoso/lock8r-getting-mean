@@ -8,9 +8,9 @@ const openingTimesSchema = new mongoose.Schema({
 });
 
 const reviewSchema = new mongoose.Schema({
-  author: String,
+  author: { type: String, required: true },
   rating: { type: Number, required: true, min: 0, max: 5 },
-  reviewText: String,
+  reviewText: {type: String, required: true },
   createdOn: { type: Date, "default": Date.now },
 });
 

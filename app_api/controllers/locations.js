@@ -65,6 +65,13 @@ exports.locationsListByDistance = (req, res) => {
   lat = parseFloat(lat);
   maxdistance = parseInt(maxdistance);
 
+  if ((!lng && lng!==0) || (!lat && lat!==0) || ! maxdistance) {
+    console.log('locationsListByDistance missing params');
+    return sendJSONresponse(res, 404, {
+      "message": "lng, lat and maxDistance query parameters are all required"
+    });
+  }
+
   const point = {
     type: 'Point',
     coordinates: [lng, lat],
@@ -72,7 +79,7 @@ exports.locationsListByDistance = (req, res) => {
 
   const geoOptions = {
     spherical: true,
-    maxDistance: maxdistance, //theEarth.getRadsFromDistance(maxdistance),
+    maxDistance: maxdistance * 1000, //theEarth.getRadsFromDistance(maxdistance),
     num: 10,
   };
 
@@ -81,9 +88,9 @@ exports.locationsListByDistance = (req, res) => {
       return sendJsonResponse(res, 400, err);
     }
 
-    console.log('STATS', stats);
-    console.log('RESULTS', results);
-    console.log('QUERY', { lng, lat, maxdistance });
+    // console.log('STATS', stats);
+    // console.log('RESULTS', results);
+    // console.log('QUERY', { lng, lat, maxdistance });
 
     if (!results || results.length === 0) {
       return sendJsonResponse(res, 404, {

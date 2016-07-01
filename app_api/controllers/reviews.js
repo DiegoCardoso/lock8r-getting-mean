@@ -24,6 +24,7 @@ const doAddReviewToLocation = (req, res, location) => {
 
   location.save((err, location) => {
     if (err) {
+      console.log('ERROR: ', err);
       return sendJsonResponse(res, 400, err);
     }
 

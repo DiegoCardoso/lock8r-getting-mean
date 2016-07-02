@@ -64,10 +64,10 @@ exports.locationsListByDistance = (req, res) => {
   lng = parseFloat(lng);
   lat = parseFloat(lat);
   maxdistance = parseInt(maxdistance);
-
+  console.log(req.query);
   if ((!lng && lng!==0) || (!lat && lat!==0) || ! maxdistance) {
     console.log('locationsListByDistance missing params');
-    return sendJSONresponse(res, 404, {
+    return sendJsonResponse(res, 404, {
       "message": "lng, lat and maxDistance query parameters are all required"
     });
   }
@@ -107,7 +107,9 @@ exports.locationsListByDistance = (req, res) => {
         _id: doc.obj._id,
     }));
 
-    return sendJsonResponse(res, 200, locations);
+    setTimeout(function () {
+      sendJsonResponse(res, 200, locations);
+    }, 1000);
   });
 };
 

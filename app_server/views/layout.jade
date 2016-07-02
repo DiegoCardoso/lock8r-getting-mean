@@ -1,5 +1,5 @@
 doctype html
-html
+html(ng-app='lock8rApp')
   head
     title= title
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
@@ -25,6 +25,8 @@ html
           .col-xs-12
             small &copy; Diego Cardoso 2016
 
+  script(type="text/javascript", src="/angular/angular.min.js")
+  script(type="text/javascript", src="/angular/lock8rApp.js")  
   script(src='https://code.jquery.com/jquery-1.12.4.min.js')
   script(src='/bootstrap/js/bootstrap.min.js')
   script(type="text/javascript", src="/javascript/validations.js")

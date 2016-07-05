@@ -5,6 +5,8 @@
     .module('lock8rApp')
     .service('lock8rData', lock8rData);
 
+  lock8rData.$inject = ['$http'];
+
   function lock8rData ($http) {
     var locationByCoords = function (lat, lng) {
       var uri = [

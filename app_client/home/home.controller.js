@@ -4,6 +4,8 @@
     .module('lock8rApp')
     .controller('homeCtrl', homeCtrl);
 
+    homeCtrl.$inject = ['$scope', 'lock8rData', 'geolocation'];
+    
     function homeCtrl($scope, lock8rData, geolocation) {
       var vm = this;
       vm.pageHeader = {

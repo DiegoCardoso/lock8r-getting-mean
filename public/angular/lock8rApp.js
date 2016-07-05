@@ -25,7 +25,7 @@
       $scope.message = 'Searching for nearby places...';
       lock8rData.locationByCoords(position.coords.latitude, position.coords.longitude)
         .success(function onSuccess(data) {
-          $scope.message = data.length > 0 ? '' : 'No locations find. =(';
+          $scope.message = data.length > 0 ? '' : 'No locations found. =(';
 
           $scope.data = {
             locations: data,

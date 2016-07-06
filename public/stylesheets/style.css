@@ -4,3 +4,4 @@
 .reviewAuthor {margin: 0 5px;}
 .reviewTimestamp {color: #ccc;}
 #filter {margin-left: 4px;}
+.label-facility + .label-facility { margin-left: 0.2em; }

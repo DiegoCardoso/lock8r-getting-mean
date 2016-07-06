@@ -20,8 +20,24 @@
       return $http.get(uri);
     };
 
+    var locationById = function locationById(locationid) {
+      return $http.get('/api/locations/' + locationid);
+    };
+
+    var addReviewById = function (locationid, data) {
+      var uri = [
+        '/api/locations/',
+        locationid,
+        '/reviews'
+      ].join('');
+
+      return $http.post(uri, data);
+    };
+
     return {
       locationByCoords: locationByCoords,
+      locationById: locationById,
+      addReviewById: addReviewById,
     };
   };
 

@@ -1,6 +1,6 @@
 (function(angular) {
   'use strict';
-  angular.module('lock8rApp', ['ngRoute', 'ngSanitize']);
+  angular.module('lock8rApp', ['ngRoute', 'ngSanitize', 'ui.bootstrap']);
 
   function configRouting($routeProvider, $locationProvider) {
     $routeProvider
@@ -12,6 +12,11 @@
       .when('/about', {
         templateUrl: '/common/views/genericText.view.html',
         controller: 'aboutCtrl',
+        controllerAs: 'vm',
+      })
+      .when('/location/:locationid', {
+        templateUrl: 'locationDetail/locationDetail.view.html',
+        controller: 'locationDetailCtrl',
         controllerAs: 'vm',
       })
       .otherwise({

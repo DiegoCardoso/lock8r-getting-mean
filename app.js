@@ -22,6 +22,8 @@ const appClientFiles = [
   'app_client/app.js',
   'app_client/home/home.controller.js',
   'app_client/about/about.controller.js',
+  'app_client/locationDetail/locationDetail.controller.js',
+  'app_client/reviewModal/reviewModal.controller.js',
   'app_client/common/services/geolocation.service.js',
   'app_client/common/services/lock8rData.service.js',
   'app_client/common/filters/formatDistance.filter.js',

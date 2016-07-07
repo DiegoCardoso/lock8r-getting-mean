@@ -1,5 +1,7 @@
 # Created by https://www.gitignore.io/api/node
 
+.env
+
 ### Node ###
 # Logs
 logs
@@ -40,3 +42,4 @@ jspm_packages
 .node_repl_history
 
 .DS_Store
+.vscode

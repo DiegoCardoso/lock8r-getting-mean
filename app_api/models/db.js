@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 require('./locations');
+require('./users');
 
 let dbURI = 'mongodb://localhost/Lock8r';
 

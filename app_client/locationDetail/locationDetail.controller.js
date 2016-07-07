@@ -6,11 +6,15 @@
     .controller('locationDetailCtrl', locationDetailCtrl);
 
 
-  locationDetailCtrl.$inject = ['$routeParams', '$uibModal', 'lock8rData'];
-  function locationDetailCtrl($routeParams, $uibModal, lock8rData) {
+  locationDetailCtrl.$inject = ['$routeParams', '$location', '$uibModal', 'lock8rData', 'authentication'];
+  function locationDetailCtrl($routeParams, $location, $uibModal, lock8rData, authentication) {
     var vm = this;
 
     vm.locationid = $routeParams.locationid;
+
+    vm.isLoggedIn = authentication.isLoggedIn();
+
+    vm.currentPath = $location.path();
 
     lock8rData.locationById(vm.locationid)
       .success(function (data) {

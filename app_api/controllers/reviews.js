@@ -1,19 +1,46 @@
 const mongoose = require('mongoose');
+
 const Location = mongoose.model('Location');
+const User = mongoose.model('User');
 
 const sendJsonResponse = (res, status, content) => {
   res.status(status);
   res.json(content);
 }
 
-const doAddReviewToLocation = (req, res, location) => {
+const getAuthor = (req, res, callback) => {
+  if (!req.payload || !req.payload.email) {
+    return sendJsonResponse(res, 404, {
+      message: 'User not found.',
+    });
+  }
+
+  const { email } = req.payload;
+  User
+    .findOne({ email })
+    .exec((err, user) => {
+      if (err) {
+        return sendJsonResponse(res, 404, err);
+      }
+
+      if (!user) {
+        return sendJsonResponse(res, 404, {
+          message: 'User not found.',
+        });
+      }
+
+      (typeof callback === 'function') && callback(req, res, user.name);
+    });
+}
+
+const doAddReviewToLocation = (req, res, location, author) => {
   if (!location) {
     return sendJsonResponse(res, 404, {
       message: 'locationid not found.'
     });
   }
 
-  const { author, rating, reviewText } = req.body;
+  const { rating, reviewText } = req.body;
   const review = {
     author,
     rating,
@@ -62,24 +89,26 @@ const doSetAverageRating = location => {
 };
 
 exports.reviewsCreate = (req, res) => {
-  const { locationId } = req.params;
+  getAuthor(req, res, (req, res, userName) => {
+    const { locationId } = req.params;
 
-  if (!locationId) {
-    return sendJsonResponse(res, 404, {
-      message: 'Not found, locationid required.',
-    });
-  }
+    if (!locationId) {
+      return sendJsonResponse(res, 404, {
+        message: 'Not found, locationid required.',
+      });
+    }
 
-  Location
-    .findById(locationId)
-    .select('reviews')
-    .exec((err, location) => {
-      if (err) {
-        return sendJsonResponse(res, 400, err);
-      }
+    Location
+      .findById(locationId)
+      .select('reviews')
+      .exec((err, location) => {
+        if (err) {
+          return sendJsonResponse(res, 400, err);
+        }
 
-      doAddReviewToLocation(req, res, location);
-    })
+        doAddReviewToLocation(req, res, location, userName);
+      });
+  });
 };
 
 exports.reviewsReadOne = (req, res) => {

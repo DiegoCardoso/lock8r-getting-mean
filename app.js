@@ -1,18 +1,33 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+(function() {
+    var childProcess = require("child_process");
+    var oldSpawn = childProcess.spawn;
+    function mySpawn() {
+        console.log('spawn called');
+        console.log(arguments);
+        var result = oldSpawn.apply(this, arguments);
+        return result;
+    }
+    childProcess.spawn = mySpawn;
+})();
+require('dotenv').load();
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+
+const uglifyJs = require('uglify-js');
+const fs = require('fs');
+const passport = require('passport');
+
 require('./app_api/models/db');
+require('./app_api/config/passport');
 
-var uglifyJs = require('uglify-js');
-var fs = require('fs');
+//const routes = require('./app_server/routes');
+const routesApi = require('./app_api/routes');
 
-var routes = require('./app_server/routes');
-var routesApi = require('./app_api/routes');
-
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'app_server', 'views'));
@@ -22,15 +37,19 @@ const appClientFiles = [
   'app_client/app.js',
   'app_client/home/home.controller.js',
   'app_client/about/about.controller.js',
+  'app_client/auth/register/register.controller.js',
+  'app_client/auth/login/login.controller.js',
   'app_client/locationDetail/locationDetail.controller.js',
   'app_client/reviewModal/reviewModal.controller.js',
   'app_client/common/services/geolocation.service.js',
   'app_client/common/services/lock8rData.service.js',
+  'app_client/common/services/authentication.service.js',
   'app_client/common/filters/formatDistance.filter.js',
   'app_client/common/filters/addHtmlLineBreaks.filter.js',
   'app_client/common/directives/ratingStars/ratingStars.directive.js',
   'app_client/common/directives/footerGeneric/footerGeneric.directive.js',
   'app_client/common/directives/navigation/navigation.directive.js',
+  'app_client/common/directives/navigation/navigation.controller.js',
   'app_client/common/directives/pageHeader/pageHeader.directive.js',
 ];
 
@@ -53,19 +72,31 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'app_client')));
 
+app.use(passport.initialize());
+
 //app.use('/', routes);
 app.use('/api', routesApi);
 
 app.use((req, res) => res.sendFile(path.join(__dirname, 'app_client', 'index.html')));
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handlers
+
+//Catch unauthorized errors
+app.use((err, req, res, next) => {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401);
+    res.json({
+      message: `${err.name}: ${err.message}`,
+    });
+  }
+});
 
 // development error handler
 // will print stacktrace

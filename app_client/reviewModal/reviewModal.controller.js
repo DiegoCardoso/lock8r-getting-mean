@@ -24,7 +24,7 @@
     vm.onSubmit = function () {
       vm.formError = '';
       console.log(vm);
-      if (!vm.formData.name || !vm.formData.rating || !vm.formData.reviewText) {
+      if (!vm.formData.rating || !vm.formData.reviewText) {
         vm.formError = 'All fields required, please try again.';
         return false;
       }
@@ -35,7 +35,6 @@
 
     vm.doAddReview = function (locationid, formData) {
       lock8rData.addReviewById(locationid, {
-          author: formData.name,
           rating: formData.rating,
           reviewText: formData.reviewText,
         })

@@ -5,9 +5,9 @@
     .module('lock8rApp')
     .service('lock8rData', lock8rData);
 
-  lock8rData.$inject = ['$http'];
+  lock8rData.$inject = ['$http', 'authentication'];
 
-  function lock8rData ($http) {
+  function lock8rData ($http, authentication) {
     var locationByCoords = function (lat, lng) {
       var uri = [
         '/api/locations?',
@@ -31,7 +31,11 @@
         '/reviews'
       ].join('');
 
-      return $http.post(uri, data);
+      return $http.post(uri, data, {
+        headers: {
+          Authorization: 'Bearer ' + authentication.getToken()
+        }
+      });
     };
 
     return {
